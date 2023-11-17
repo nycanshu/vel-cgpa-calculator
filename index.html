@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPA Calculator</title>
+    
+    <link rel="stylesheet" href="style.css">
+</head> 
+<body>
+
+    <h2 class="gpa">GPA Calculator</h2>
+
+    <label for="subject">Subject Name:</label>
+    <input type="text" id="subject">
+
+    <label for="grade">Grade:</label>
+    <select id="grade">
+      <option value="" disabled selected>Select Grade</option>
+        <option value="S">S</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+    </select>
+
+    <label for="credits">Credits:</label>
+    <input type="number" id="credits" step="1" min="1">
+
+    <button onclick="addRow()">Add Row</button>
+    <button onclick="calculateGPA()">Calculate GPA</button>
+    <button onclick="resetForm()">Reset</button>
+ 
+    <table id="gpaTable">
+        <thead>
+            <tr>
+                <th>Subject Name</th>
+                <th>Grade</th>
+                <th>Credits</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <div id="result"></div>
+
+    <script>
+        function addRow() {
+            var subject = document.getElementById("subject").value;
+            var grade = document.getElementById("grade").value;
+            var credits = document.getElementById("credits").value;
+
+            if (subject && grade && credits) {
+                var table = document.getElementById("gpaTable").getElementsByTagName('tbody')[0];
+                var newRow = table.insertRow(table.rows.length);
+                var cell1 = newRow.insertCell(0);
+                var cell2 = newRow.insertCell(1);
+                var cell3 = newRow.insertCell(2);
+
+                cell1.innerHTML = subject;
+                cell2.innerHTML = grade;
+                cell3.innerHTML = credits;
+
+              
+                document.getElementById("subject").value = "";
+                document.getElementById("grade").value = "";
+                document.getElementById("credits").value = "";
+            } else {
+                alert("Please fill in all fields.");
+            }
+        }
+
+        function calculateGPA() {
+            var table = document.getElementById("gpaTable");
+            var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+            var totalGradePoints = 0;
+            var totalCredits = 0;
+
+            for (var i = 0; i < rows.length; i++) {
+                var grade = rows[i].getElementsByTagName('td')[1].innerHTML;
+                var credits = parseFloat(rows[i].getElementsByTagName('td')[2].innerHTML);
+
+                totalGradePoints += calculateGradePoints(grade) * credits;
+                totalCredits += credits;
+            }
+
+            var gpa = totalGradePoints / totalCredits;
+
+            
+            document.getElementById("result").innerHTML = "Your GPA is: " + gpa.toFixed(2);
+        }
+        function resetForm() {
+            document.getElementById("subject").value = "";
+            document.getElementById("grade").value = "";
+            document.getElementById("credits").value = "";
+
+            var table = document.getElementById("gpaTable").getElementsByTagName('tbody')[0];
+            table.innerHTML = ""; // Clear the table
+            document.getElementById("result").innerHTML = ""; // Clear the result
+        }
+
+        function calculateGradePoints(grade) {
+            switch (grade) {
+                
+                  
+                case 'S':
+                    return 10;
+                case 'A':
+                    return 9;
+                case 'B':
+                    return 8;
+                case 'C':
+                    return 7;
+                case 'D':
+                    return 6;
+                default:
+                    return 0;
+            }
+        }
+    </script>
+<div class = down>
+    <footer>
+    
+        <p>&copy; Anshu & Rupa</p>
+        
+    </footer>
+    </div>
+
+</body>
+</html>
